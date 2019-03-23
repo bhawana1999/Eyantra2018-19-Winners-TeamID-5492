@@ -30,7 +30,10 @@ class Hey:
 		# cv2.namedWindow("image", 1)
 		self.image_sub=rospy.Subscriber('/usb_cam/image_rect_color', Image, self.image_callback)
 		# self.image_sub=rospy.Subscriber('/whycon/image_out', Image, self.image_callback)
+		self.no_of_led=rospy.Publisher('/led', Int32,queue_size=10)
 		self.no_of_red=rospy.Publisher('/red', Int32,queue_size=10)
+		self.no_of_blue=rospy.Publisher('/blue', Int32,queue_size=10)
+		self.no_of_green=rospy.Publisher('/green', Int32,queue_size=10)
 
 	# Function name - image_callback
 	# Input - msg (image)
@@ -54,17 +57,21 @@ class Hey:
 		# # cv2.waitKey(0)
 		# # cv2.destroyAllWindows()
 		l = [(255,0,0),(0,255,0),(0,0,255)]
-		thresh=cv2.threshold(blurred, 200, 255, cv2.THRESH_BINARY)[1]
+		thresh=cv2.threshold(blurred, 210, 255, cv2.THRESH_BINARY)[1]
 		# # cv2.imshow("thresh", thresh)
 		# # cv2.waitKey(0)
 		# # cv2.destroyAllWindows()
 		im2, cnts,hierarchy= cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 		#print("number of bright spots are", len(cnts))
 		#cv2.drawContours(image, cnts, -1, (0,0,255), 2)
-		self.count_red = len(cnts)
+		self.count = len(cnts)
 		boxes = []
+		self.count_blue = 0
+		self.count_red = 0
+		self.count_green = 0
 		for c in cnts:
     			(x, y, w, h) = cv2.boundingRect(c)
+    		
     			#leftmost = tuple(c[c[:,:,0].argmin()][0])
     			#rightmost = tuple(c[c[:, :, 0].argmax()][0])
     			#topmost = tuple(c[c[:, :, 1].argmin()][0])
@@ -76,11 +83,17 @@ class Hey:
     			#colour4 = image[bottommost[1]+1,bottommost[0]+1]
 
     			#colour = [(colour1[0]+colour2[0]+colour3[0]+colour4[0])/4, (colour1[1]+colour2[1]+colour3[1]+colour4[1])/4, (colour1[2]+colour2[2]+colour3[2]+colour4[2])/4]
-    			
-    			colour1 = image[y-3, x-3]
-    			colour2 = image[y+h+3, x+w+3]
+ 
+    			colour1 = image[y-2, x-2]
+    			colour2 = image[y+h, x+w]
     			colour = [(int(colour1[0])+int(colour2[0]))/2, (int(colour1[1])+int(colour2[1]))/2, (int(colour1[2])+int(colour2[2]))/2]
     			detect_color = l[np.argmax(colour)]
+    			if detect_color[0] > 0:
+    				self.count_blue += 1
+    			elif detect_color[1]>0:
+    				self.count_green +=1
+    			else:
+    				self.count_red += 1
 
     			cv2.rectangle(image, (x-3,y-3), (x+w+3,y+h+3), detect_color, 2)
 
@@ -89,7 +102,10 @@ class Hey:
 		cv2.waitKey(1)
 		#cv2.destroyAllWindows()
 
+		self.no_of_led.publish(self.count)
 		self.no_of_red.publish(self.count_red)
+		self.no_of_blue.publish(self.count_blue)
+		self.no_of_green.publish(self.count_green)
         rospy.sleep(0.1)
 		
 # if __name__=='__main__':

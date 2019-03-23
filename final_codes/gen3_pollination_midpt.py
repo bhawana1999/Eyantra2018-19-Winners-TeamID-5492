@@ -5,7 +5,7 @@ from geometry_msgs.msg import PoseArray
 from std_msgs.msg import *
 import rospy
 import time
-
+import datetime
 ################################################################################
 #Team Id:eyrc#5492                                                             #
 #Author List:Bhawana Chhaglani, Abhaysheel Anand                               #
@@ -49,52 +49,43 @@ class DroneFly():
         self.thresh = 2
         self.threshZ = 1.5
 
-        w,h = 3,4
+        w,h = 3,3
          ##Plant_location array that stores the whycon coordinates of all the plants
         self.Plant_location = [[0.0 for x in range(w)] for y in range(h)]                     
         # Red
-        self.Plant_location[0] = [-5.4, 2.8, 24.3]
+        self.Plant_location[1] = [-5.4, -3, 21.6]
         # Green 
-        self.Plant_location[1] = [-2.5, -5.5, 20.7]
+        self.Plant_location[2] = [2.3, -2.7, 19.1]
         # Blue
-        self.Plant_location[2] = [-0.01, -0.25, 19.5]
+        self.Plant_location[0] = [5.3, 2.9, 24.3]
 
-        self.Plant_location[3] = [5, 3, 21.8]
-
-        w,h = 3,12
+        w,h = 3,10
         self.points = [[0.0 for x in range(w)] for y in range(h)]
-        self.points[0] = [-0.3 ,5.78,19.5]
+        self.points[0] = [-1.5,5.78,23]
 
         # Red
+        #self.points[1] = [-5.45, 0.34, 22.8]
         self.points[1] = self.Plant_location[0]
 
-        self.points[2] = [(self.Plant_location[0][0]+self.Plant_location[1][0])/2, (self.Plant_location[0][1]+self.Plant_location[1][1])/2, min(self.Plant_location[1][2],self.Plant_location[0][2])-0.5]
-        #self.points[2] = [-6.5, -2, 22.8]
+        self.points[2]  = [(self.Plant_location[0][0]+self.Plant_location[1][0])/2, (self.Plant_location[0][1]+self.Plant_location[1][1])/2, min(self.Plant_location[1][2],self.Plant_location[0][2])-0.5]
+
         # Green 
+        #self.points[2] = [-0.15 , -4.3 , 21.8]
         self.points[3] = self.Plant_location[1]
 
-        self.points[4] = [(self.Plant_location[1][0]+self.Plant_location[2][0])/2, (self.Plant_location[1][1]+self.Plant_location[2][1])/2, min(self.Plant_location[1][2],self.Plant_location[2][2])-0.5]
-        #self.points[4] = [5, (self.Plant_location[1][1]+self.Plant_location[2][1])/2, min(self.Plant_location[1][2],self.Plant_location[2][2])-0.5]
+        # self.points[4] = [1.7 , -3.6, 17]
+        self.points[4]  = [(self.Plant_location[1][0]+self.Plant_location[2][0])/2, (self.Plant_location[1][1]+self.Plant_location[2][1])/2, min(self.Plant_location[1][2],self.Plant_location[2][2])-0.5]
         # Blue
-        #self.points[5] = [2, -5.5, 18.7]
+        #self.points[4] = [3.3,-2.2, 19.1]
         self.points[5] = self.Plant_location[2]
 
-        self.points[6] = [(self.Plant_location[3][0]+self.Plant_location[2][0])/2, (self.Plant_location[3][1]+self.Plant_location[2][1])/2, min(self.Plant_location[3][2],self.Plant_location[2][2])-0.5]
+        self.points[7] = [0.06 ,6.2,21]
+        self.points[6] = [(self.points[7][0]+self.Plant_location[2][0])/2, (self.points[7][1]+self.Plant_location[2][1])/2, min(self.points[7][2],self.Plant_location[2][2])-0.5]
 
-        #Red
-        self.points[7] = self.Plant_location[3]
-
-        self.points[9] = [0.06 ,6.2,21]
-        self.points[8] = [(self.Plant_location[3][0]+self.points[9][0])/2, (self.Plant_location[3][1]+self.points[9][1])/2, min(self.Plant_location[3][2],self.points[9][2])-0.5]
-        self.points[10] = [-0.14, 5.6, 25.5]
+        #self.points[7] = [0.02,5.78,21.31]
+        self.points[8] = [-0.14, 5.6, 25.5]
         #self.points[7] = [0.04 , 5.9, 27.3]
-        self.points[11] = [-0.15 , 5.66, 28.5]
-
-
-        #self.points[8] = [-2.63,4.02,17.32]
-        #self.points[9] = [0.09, 5.6, 24.5]
-        
-        #self.points[10] = [-0.05 , 6.55, 27.2]
+        self.points[9] = [-0.07 , 5.83, 28.5]
         # Position to hold.
         self.wp_x = self.points[0][0]
         self.wp_y = self.points[0][1]
@@ -187,13 +178,6 @@ class DroneFly():
 
     def disarm(self):
         self.cmd.rcAUX4 = 1100
-
-        #############################
-        # self.cmd.rcThrottle = 1300
-        # self.cmd.rcAUX4 = 1200
-        #############################
-
-
         self.pluto_cmd.publish(self.cmd)
         rospy.sleep(1)
 
@@ -215,7 +199,6 @@ class DroneFly():
         self.count_red =0
         self.count_green = 0
         self.count_blue = 0
-        
         self.counter = 0
         self.c = 0
         self.timer = 0
@@ -226,16 +209,14 @@ class DroneFly():
         self.time_count4 = 0
         self.point_skipped = 0
         self.c1 = 0
-
         while True:
             self.calc_pid()
             #print self.count_color
-
-            if (time.time()-self.timer > 45) and self.c ==1:
+            if (time.time()-self.timer > 50) and self.c ==1:
                 print ("Stop")
                 self.disarm()
                 break
-            if self.counter == 1 or self.counter == 3 or self.counter == 5 or self.counter  == 7:
+            if self.counter == 1 or self.counter == 3 or self.counter == 5:
                 if (time.time()-self.time_count > 25) and self.c1 == 0:
                     print ("15s done")
                     self.time_count1 = time.time()
@@ -243,14 +224,14 @@ class DroneFly():
                     self.wp_y = self.points[self.counter][1] + 1
                     self.wp_z = self.points[self.counter][2]
                     self.c1 = 1
-                elif (time.time() - self.time_count1 > 10) and self.c1 == 1:
+                elif (time.time() - self.time_count1 > 8) and self.c1 == 1:
                     print ("5s done 1")
                     self.time_count2 = time.time()
                     self.wp_x = self.points[self.counter][0] - 1
                     self.wp_y = self.points[self.counter][1] - 1
                     self.wp_z = self.points[self.counter][2]
                     self.c1 = 2
-                elif (time.time() - self.time_count2 > 10) and self.c1 == 2:
+                elif (time.time() - self.time_count2 > 8) and self.c1 == 2:
                     print ("5s done 2")
                     self.time_count3 = time.time()
                     self.wp_x = self.points[self.counter][0] + 1
@@ -259,20 +240,20 @@ class DroneFly():
                   
                     self.c1 = 3
 
-                elif (time.time() - self.time_count3>10) and self.c1 == 3:
+                elif (time.time() - self.time_count3>8) and self.c1 == 3:
                     print("5s done 3")
                     self.time_count4 = time.time()
                     self.wp_x = self.points[self.counter][0] - 1
                     self.wp_y = self.points[self.counter][1] + 1
                     self.wp_z = self.points[self.counter][2]
                     self.c1 = 4
-                # elif self.c1 == 4 :
-                #     self.counter = self.counter+1
-                #     self.wp_x = self.points[self.counter][0]
-                #     self.wp_y = self.points[self.counter][1]
-                #     self.wp_z = self.points[self.counter][2]
-                #     self.c1 = 0
-                #     self.point_skipped +=1
+                elif self.c1 == 4 :
+                    self.counter = self.counter+1
+                    self.wp_x = self.points[self.counter][0]
+                    self.wp_y = self.points[self.counter][1]
+                    self.wp_z = self.points[self.counter][2]
+                    self.c1 = 0
+                    self.point_skipped +=1
 
 
             if self.counter == 1 and self.count_color == 1:
@@ -282,7 +263,7 @@ class DroneFly():
                 self.wp_z = self.points[self.counter][2]
                 #print ("done", self.counter)
 
-            if (self.counter == 3 ) and self.count_color == 2 :
+            if (self.counter == 3 ) and self.count_color == 2 - self.point_skipped :
                 self.counter = self.counter+1
                 self.wp_x = self.points[self.counter][0]
                 self.wp_y = self.points[self.counter][1]
@@ -290,40 +271,27 @@ class DroneFly():
                 #print ("done", self.counter)
 
 
-            if (self.counter == 5 ) and self.count_color == 3 :
+            if (self.counter == 5 ) and self.count_color == 3  - self.point_skipped:
                 self.counter = self.counter+1
                 self.wp_x = self.points[self.counter][0]
                 self.wp_y = self.points[self.counter][1]
                 self.wp_z = self.points[self.counter][2]
                 #print ("done", self.counter)
 
-            if (self.counter == 7 ) and self.count_color == 4:
-                self.counter = self.counter+1
-                self.wp_x = self.points[self.counter][0]
-                self.wp_y = self.points[self.counter][1]
-                self.wp_z = self.points[self.counter][2]
-
-            if (self.counter == 0 or self.counter == 2 or self.counter ==4 or self.counter == 6 or self.counter == 8) and abs(self.drone_x - self.wp_x) < 2 and abs(self.drone_y-self.wp_y)< 2 and abs(self.drone_z - self.wp_z) < 1:
+            if (self.counter == 0 or self.counter == 2 or self.counter == 4 or self.counter == 6) and abs(self.drone_x - self.wp_x) < 2 and abs(self.drone_y-self.wp_y)< 2 and abs(self.drone_z - self.wp_z) < 1:
                 self.counter = self.counter+1
                 
                 self.wp_x = self.points[self.counter][0]
                 self.wp_y = self.points[self.counter][1]
                 self.wp_z = self.points[self.counter][2]
-                self.time_count = time.time()
-                self.c1 = 0
-
                 #print ("done", self.counter)
+                self.time_count = time.time() 
+                self.c1 = 0
+                
 
-            #if self.counter ==2 and abs(self.drone_z - self.wp_z)<self.threshZ and abs(self.drone_x - self.wp_x)<self.thresh and abs(self.drone_y - self.wp_y)<self.thresh:
-            #    self.counter = self.counter+1
-            #    
-            #    self.wp_x = self.points[self.counter][0]
-            #    self.wp_y = self.points[self.counter][1]
-            #    self.wp_z = self.points[self.counter][2]
-            #    print ("done", self.counter)
-
-            if self.counter == 9 and self.c==0:
-                print "Pollination Done! Pollinated",
+            
+            if self.counter == 7  and self.c==0:
+                print "Pollination Done! Pollinated ",
                 if self.count_red>0:
                     print self.count_red ,"Red Daylily, " , 
                 if self.count_green>0:
@@ -333,16 +301,17 @@ class DroneFly():
                     print "and ",self.count_blue ," Blue Delphinium"
                 self.c+=1
                 self.timer = time.time()
+
                 
 
-            if self.counter == 9 and abs(self.drone_x - self.wp_x) < 2 and abs(self.drone_y-self.wp_y)< 2 and abs(self.drone_z - self.wp_z) < 2:
+            if self.counter == 7 and abs(self.drone_x - self.wp_x) < 2 and abs(self.drone_y-self.wp_y)< 2 and abs(self.drone_z - self.wp_z) < 2:
                 self.counter = self.counter + 1
                 self.wp_x = self.points[self.counter][0]
                 self.wp_y = self.points[self.counter][1]
                 self.wp_z = self.points[self.counter][2]
                 #print ("done", self.counter)
                 
-            if self.counter == 10 and abs(self.drone_x - self.wp_x) < 1 and abs(self.drone_y-self.wp_y)< 1 and abs(self.drone_z - self.wp_z) < 1.2:
+            if self.counter == 8 and abs(self.drone_x - self.wp_x) < 1 and abs(self.drone_y-self.wp_y)< 1 and abs(self.drone_z - self.wp_z) < 1:
                 self.counter = self.counter + 1
                 self.wp_x = self.points[self.counter][0]
                 self.wp_y = self.points[self.counter][1]
@@ -351,7 +320,7 @@ class DroneFly():
                 
 
 
-            if self.counter == 11 and abs(self.drone_x - self.wp_x)< 0.4 and abs(self.drone_y-self.wp_y)< 0.4 and abs(self.drone_z - self.wp_z) < 0.8 and self.c == 1 :
+            if self.counter == 9 and abs(self.drone_x - self.wp_x) < 0.3 and abs(self.drone_y- self.wp_y)< 0.3 and abs(self.drone_z - self.wp_z) < 0.8 and self.c==1:
                 self.c += 1  
                 print ("STOP")
                 self.disarm()
