@@ -16,4 +16,4 @@ Major challenges in this theme:
 5. Landing of drone
 
 
-[Project Video](https://youtu.be/_y-xsZQv6v4)
+[Project Video](https://youtu.be/_y-xsZQv6v4 =24x48)
