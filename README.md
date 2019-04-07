@@ -3,15 +3,16 @@ Includes ROS, image processing and PID
 
 This projects imitates the behaviour of pollinator bee. As the bee goes from flower to flower and pollinates them, here the drone(PlutoX) takes off from beehive, goes to each flower, pollinates them and lands back to the beehive.
 
-<img src="https://github.com/sona-19/Eyantra2018-19/blob/master/2.jpeg" width="200">
 
-b>Design of Flower</b> - Design of Flower needs to be made such that it increases the chances of pollination and at the same time decreases the chances of collision. The flower is made in a domb shape by soldering wire placed very close to each other, so that it gets pollinated, even with the slightest touch.
+<img src="https://github.com/sona-19/Eyantra2018-19/blob/master/2.jpeg" width="250">
+
+<b>Design of Flower</b> - Design of Flower needs to be made such that it increases the chances of pollination and at the same time decreases the chances of collision. The flower is made in a domb shape by soldering wire placed very close to each other, so that it gets pollinated, even with the slightest touch.
 
 <b>Bee Stinger Design</b>  - The stinger is made by strips of aluminium foil placed below the drone. 
 
+<b>Pollination</b>
 
-
-
+<img src="https://github.com/sona-19/Eyantra2018-19/blob/master/pollination.jpeg" width="250">
 
 
 Major challenges in this theme:
