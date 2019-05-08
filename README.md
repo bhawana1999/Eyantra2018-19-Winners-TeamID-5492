@@ -25,3 +25,5 @@ Major challenges in this theme:
 
 
 [Project Video](https://youtu.be/_y-xsZQv6v4)
+
+[eYRC Video](https://www.youtube.com/watch?v=d3jKvnjwe4E&feature=youtu.be)
