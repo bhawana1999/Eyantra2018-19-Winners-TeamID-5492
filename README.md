@@ -6,7 +6,7 @@ This projects imitates the behaviour of pollinator bee. As the bee goes from flo
 
 <img src="https://github.com/sona-19/Eyantra2018-19/blob/master/2.jpeg" width="250">
 
-<b>Design of Flower</b> :- Design of Flower needs to be made such that it increases the chances of pollination and at the same time decreases the chances of collision. The flower is made in a domb shape by soldering wire placed very close to each other, so that it gets pollinated, even with the slightest touch.
+<b>Design of Flower</b>  :- Design of Flower needs to be made such that it increases the chances of pollination and at the same time decreases the chances of collision. The flower is made in a domb shape by soldering wire placed very close to each other, so that it gets pollinated, even with the slightest touch.
 
 <b>Bee Stinger Design</b>  :- The stinger is made by strips of aluminium foil placed below the drone. 
 
