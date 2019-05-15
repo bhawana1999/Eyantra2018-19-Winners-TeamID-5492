@@ -24,6 +24,12 @@ Major challenges in this theme:
 5. Landing of drone
 
 
+<b>Various Algorithms Designed to overcome the above challenges</b>
+
+1. Landing of Drone :- The algorithm that made the drone land involves giving 3 waypoints at various heights above the beehive on which the drone was supposed to land. The thresholds given for each of those points were different. For example the threshold for the topmost point was more than that of the point just below it. Similarly, the point just above the beehive had minimum threshold. This resulted in formation of a cone that facilitated the landing of the drone. 
+
+
+
 [Project Video](https://youtu.be/_y-xsZQv6v4)
 
 [eYRC Video](https://www.youtube.com/watch?v=d3jKvnjwe4E&feature=youtu.be)
