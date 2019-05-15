@@ -13,7 +13,7 @@ This projects imitates the behaviour of pollinator bee. As the bee goes from flo
 <b>Pollination</b>
 
 <img src="https://github.com/sona-19/Eyantra2018-19/blob/master/pollination.jpeg" width="340">
-
+<img src= "https://github.com/sona-19/Eyantra2018-19-Winners-TeamID-5492/blob/master/images_eyrc2018/HGJ_0541.JPG width="340">
 
 Major challenges in this theme:
 
