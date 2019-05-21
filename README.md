@@ -10,6 +10,10 @@ This projects imitates the behaviour of pollinator bee. As the bee goes from flo
 
 <b>Bee Stinger Design</b>  :- The stinger is made by strips of aluminium foil placed below the drone. 
 
+Design of flower and Stinger :-
+
+<img src ="https://github.com/sona-19/Eyantra2018-19-Winners-TeamID-5492/blob/master/images_eyrc2018/IMG_7756.JPG" width = "400">
+
 <b>Pollination</b>
 
 <img src="https://github.com/sona-19/Eyantra2018-19/blob/master/pollination.jpeg" width="340">
